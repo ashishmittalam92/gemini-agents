@@ -2,3 +2,5 @@
 google-genai 
 openpyxl 
 playwright
+# To parse and sanitize the dirty HTML payload locally without adding processing overhead, install the standard parsing utility inside your virtual environment:
+beautifulsoup4
