@@ -1,0 +1,4 @@
+# installation.txt
+google-genai 
+openpyxl 
+playwright
