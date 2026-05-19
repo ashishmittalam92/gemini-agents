@@ -41,7 +41,9 @@ def main():
             cleaned_json_string = cleaned_json_string.replace("```json", "").replace("```", "").strip()
                 
             parsed_payload = json.loads(cleaned_json_string)
-            jobs_found = parsed_payload if isinstance(parsed_payload, list) else [parsed_payload]
+
+            # Extract the nested 'jobs' array from your new schema blueprint safely
+            jobs_found = parsed_payload.get("jobs", [])
             
             if not jobs_found or len(jobs_found) == 0:
                 print("ℹ️ No matched vacancies extracted matching target stack properties.")
@@ -54,11 +56,11 @@ def main():
                     
                 print(f"   🎯 Processing: {job['job_title']} at {job['company']} (Score: {job.get('score_out_of_10', 0)}/10)")
                 
-                # 3. Call your updated, geo-targeted LinkedIn deep linker
+                # Extract your updated search keywords or fallback gracefully
                 search_keywords = job.get("linkedin_search_keywords", '"Talent Acquisition" OR "Recruiter"')
                 outreach_links = find_linkedin_targets(job["company"], search_keywords)
                 
-                # 4. Commit, auto-sort (Date -> Score -> Salary), and rewrite to disk safely
+                # Update, pass along extra schema values, and sort the Excel workbook structure on disk
                 append_to_local_sheet(job, outreach_links)
                 
         except Exception as pipeline_error:
